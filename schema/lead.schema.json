@@ -1,0 +1,91 @@
+{
+  "name": "lead",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "is_lead": {
+        "type": "boolean",
+        "description": "true, если текст - обращение клиента (запрос, заказ, вопрос). false для спама, рекламы, пустых и бессмысленных сообщений."
+      },
+      "client_name": {
+        "type": ["string", "null"],
+        "description": "Имя контактного лица как в тексте. null, если не указано."
+      },
+      "company": {
+        "type": ["string", "null"],
+        "description": "Название компании клиента. null, если не указано."
+      },
+      "phone": {
+        "type": ["string", "null"],
+        "description": "Телефон как в тексте, без изменений. null, если не указан."
+      },
+      "email": {
+        "type": ["string", "null"],
+        "description": "Email как в тексте. null, если не указан."
+      },
+      "request_type": {
+        "type": "string",
+        "enum": ["purchase", "consultation", "support", "partnership", "other"],
+        "description": "purchase - хочет купить/заказать; consultation - вопрос или просьба проконсультировать; support - проблема с уже купленным; partnership - предложение о сотрудничестве; other - всё остальное."
+      },
+      "product_or_service": {
+        "type": ["string", "null"],
+        "description": "Что именно интересует клиента, кратко. null, если неясно."
+      },
+      "quantity": {
+        "type": ["string", "null"],
+        "description": "Количество/объём с единицами, как в тексте (например '200 шт', '3 месяца'). null, если не указано."
+      },
+      "budget": {
+        "type": ["number", "null"],
+        "description": "Бюджет числом без пробелов и валюты. Если указан диапазон - верхняя граница. null, если не указан."
+      },
+      "currency": {
+        "type": ["string", "null"],
+        "enum": ["RUB", "KZT", "USD", "EUR", null],
+        "description": "Валюта бюджета. null, если бюджета нет или валюта неясна."
+      },
+      "deadline": {
+        "type": ["string", "null"],
+        "description": "Желаемый срок в формате YYYY-MM-DD. Относительные сроки ('через неделю', 'до конца месяца') пересчитай от даты 'Сегодня'. null, если срок не указан."
+      },
+      "priority": {
+        "type": "string",
+        "enum": ["low", "medium", "high"],
+        "description": "high - срочно или срок в ближайшие 7 дней, либо крупный заказ; low - нет конкретики и сроков; medium - всё остальное."
+      },
+      "summary": {
+        "type": "string",
+        "description": "Суть заявки одним-двумя предложениями на русском."
+      },
+      "missing_fields": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Какие важные для обработки данные отсутствуют: из списка client_name, phone, email, product_or_service, budget, deadline."
+      },
+      "confidence": {
+        "type": "number",
+        "description": "Уверенность в корректности извлечения от 0 до 1."
+      }
+    },
+    "required": [
+      "is_lead",
+      "client_name",
+      "company",
+      "phone",
+      "email",
+      "request_type",
+      "product_or_service",
+      "quantity",
+      "budget",
+      "currency",
+      "deadline",
+      "priority",
+      "summary",
+      "missing_fields",
+      "confidence"
+    ]
+  }
+}

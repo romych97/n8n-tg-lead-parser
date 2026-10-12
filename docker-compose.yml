@@ -1,0 +1,27 @@
+services:
+  n8n:
+    # Проект проверен на n8n 1.123. Если на latest что-то сломается - укажите 1.x версию в .env (N8N_VERSION).
+    image: docker.n8n.io/n8nio/n8n:${N8N_VERSION:-latest}
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      # Telegram присылает обновления только на публичный HTTPS-адрес - см. README, раздел про туннель.
+      - WEBHOOK_URL=${WEBHOOK_URL}
+      # n8n 2.x: предпочитает N8N_WEBHOOK_URL (дублируем из .env WEBHOOK_URL).
+      - N8N_WEBHOOK_URL=${WEBHOOK_URL}
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PROTOCOL=https
+      # cloudflared шлёт X-Forwarded-* — без этого в логах ERR_ERL_UNEXPECTED_X_FORWARDED_FOR.
+      - N8N_PROXY_HOPS=1
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - GENERIC_TIMEZONE=Asia/Almaty
+      - TZ=Asia/Almaty
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflow:/workflow:ro
+
+volumes:
+  n8n_data:

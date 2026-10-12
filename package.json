@@ -1,0 +1,15 @@
+{
+  "name": "tg-lead-parser",
+  "version": "1.0.0",
+  "description": "Telegram-бот разбора заявок на n8n: текст/PDF → LLM (structured output) → Google Sheets + уведомления",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build-workflow.mjs",
+    "test": "node --test",
+    "check": "npm test && npm run build"
+  }
+}
